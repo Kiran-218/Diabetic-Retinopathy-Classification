@@ -16,8 +16,8 @@ class APTOSDataset(Dataset):
 
     def __getitem__(self, idx):
         img_id = self.df.iloc[idx]['id_code']
-        label = self.df.iloc[idx]['thresholds']
-        label = torch.tensor(label, dtype=torch.float)
+        label = self.df.iloc[idx]['diagnosis']
+        label = torch.tensor(label, dtype=torch.long)
 
         img_path = os.path.join(self.img_dir, img_id + '.png')
         image = Image.open(img_path).convert("RGB")
@@ -39,7 +39,7 @@ class IDRiDDataset(Dataset):
     def __getitem__(self, index):
         img_path = self.dataframe.iloc[index]['full_path']
         label = self.dataframe.iloc[index]['Retinopathy grade']
-        label = torch.tensor([1 if label >= i else 0 for i in range(1, 5)], dtype=torch.float)
+        label = torch.tensor(label, dtype=torch.long)
         image = Image.open(img_path).convert('RGB')
         if self.transform:
             image = self.transform(image)
